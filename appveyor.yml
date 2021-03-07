@@ -1,13 +1,18 @@
 version: 2.2.0.{build}
 image: Visual Studio 2017
 
-build_script:
-- cmd: >-
-    git submodule update --init --recursive
+configuration:
+- Debug
+- Release
 
-    msbuild /restore /m /p:Configuration=Release /clp:v=m TaglibSharp.sln /bl /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+build_script:
+- git submodule update --init --recursive
+- nuget restore TaglibSharp.sln
+- for /f "tokens=1,* delims=-" %%a in ('"git describe --long --tags --match v*"') do set version_suffix=%%b
+- msbuild /m /p:VersionSuffix="%version_suffix%-%CONFIGURATION%" /p:Configuration=%CONFIGURATION% /clp:v=m TaglibSharp.sln /bl /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 
 artifacts:
+- path: src\TaglibSharp\bin\$(configuration)\*.nupkg
 - path: msbuild.binlog
   name: MSBuild Log
 

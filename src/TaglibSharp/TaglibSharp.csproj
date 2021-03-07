@@ -15,7 +15,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>$(ReleaseVersion)</Version>
+    <VersionPrefix>$(ReleaseVersion)</VersionPrefix>
     <PackageId>TagLibSharp</PackageId>
     <Product>TagLib#</Product>
     <Description>A library for for reading and writing metadata in media files, including video, audio, and photo formats.</Description>
